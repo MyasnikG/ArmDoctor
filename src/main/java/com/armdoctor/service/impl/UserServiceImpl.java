@@ -10,7 +10,10 @@ import com.armdoctor.service.UserService;
 import com.armdoctor.util.ArmDoctorMailSender;
 import com.armdoctor.util.TokenGenerate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ArmDoctorMailSender mailSender;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity createUser(UserDTO dto) throws APIException {
@@ -35,7 +41,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setSurname(dto.getSurname());
         userEntity.setYear(dto.getYear());
         userEntity.setEmail(dto.getEmail());
-        userEntity.setPassword(dto.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         userEntity.setVerifyCode(verifyCode);
         userEntity.setStatus(Status.INACTIVE);
         userEntity.setRole(dto.getRole());
@@ -49,6 +55,18 @@ public class UserServiceImpl implements UserService {
         mailSender.sendEmail(dto.getEmail(), "Your verification code", "Your verification code is: " + verifyCode);
         return userEntity;
     }
+
+    @Override
+    public List<UserEntity> getByUsername(String email) throws APIException {
+        List<UserEntity> entityList = null;
+        try {
+            entityList = userRepository.getByEmail(email);
+        } catch (Exception e) {
+            throw new APIException("Problem during getting the user");
+        }
+        return entityList;
+    }
+
 
     private void validateFields(UserDTO userDTO) {
         if (userDTO.getName() == null || userDTO.getName().isBlank()) {
