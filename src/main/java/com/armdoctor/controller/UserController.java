@@ -15,6 +15,7 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+
     @PostMapping("/create-user")
     public UserEntity createUser(@RequestBody UserDTO userDTO) throws APIException {
         UserEntity user = userService.createUser(userDTO);
@@ -22,8 +23,13 @@ public class UserController {
     }
 
     @GetMapping("/get-by-username")
-        public List<UserEntity> getByUsername(@RequestParam String email) throws APIException {
+    public List<UserEntity> getByUsername(@RequestParam String email) throws APIException {
         return userService.getByUsername(email);
+    }
+
+    @PatchMapping("/verify")
+    public UserEntity verifyUser(@RequestParam String email, @RequestParam String verifyCode) throws APIException {
+        return userService.verifyUser(email, verifyCode);
     }
 
 }

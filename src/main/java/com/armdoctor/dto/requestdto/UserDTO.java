@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 @Data
 public class UserDTO {
 
+    private Integer id;
     private String name;
     private String surname;
     private Integer year;
