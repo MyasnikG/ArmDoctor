@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity createUser(UserDTO dto) throws APIException {
         UserValidation.validateFields(dto);
         UserValidation.validatePassword(dto.getPassword());
+        validateDuplicate(dto);
 
         String verifyCode = TokenGenerate.generateVerifyCode();
 
@@ -87,10 +88,37 @@ public class UserServiceImpl implements UserService {
         return userEntity;
     }
 
+    @Override
+    public UserEntity changePassword(String oldPassword, String newPassword, String confirmPassword, String email) throws APIException {
+        UserEntity userEntity = null;
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new UserValidationException("Passwords do not match!");
+        }
+
+        try {
+            userEntity = userRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new APIException("Problem during changing of password");
+        }
+
+        if (!userEntity.getPassword().equals(passwordEncoder.encode(oldPassword))) {
+            throw new UserValidationException("Wrong old password");
+        }
+
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        try {
+            userRepository.save(userEntity);
+        } catch (Exception e) {
+            throw new APIException("Problem during changing password");
+        }
+        return userEntity;
+    }
+
     private void validateDuplicate(UserDTO userDTO) {
         if (userDTO.getId() == null) {
             List<UserEntity> userEntityList = userRepository.getByEmail(userDTO.getEmail());
-            if (userEntityList.isEmpty()) {
+            if (!userEntityList.isEmpty()) {
                 throw new ResourceAlreadyExistsException("User already exists");
             }
         } else {

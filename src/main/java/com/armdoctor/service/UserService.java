@@ -13,4 +13,6 @@ public interface UserService {
     List<UserEntity> getByUsername(String email) throws APIException;
 
     UserEntity verifyUser(String email, String verifyCode) throws APIException;
+
+    UserEntity changePassword(String oldPassword, String newPassword, String confirmPassword, String email) throws APIException;
 }
