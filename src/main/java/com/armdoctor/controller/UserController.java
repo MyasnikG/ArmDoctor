@@ -42,4 +42,21 @@ public class UserController {
         return userService.changePassword(oldPassword, newPassword, confirmPassword, email);
     }
 
+    @PatchMapping("/send-reset-token")
+    public UserEntity sendResetToken(@RequestParam String email) throws APIException {
+        return userService.sendToken(email);
+    }
+
+    @GetMapping("/verify-reset-token")
+    public Boolean verifyResetToken(@RequestParam String email, @RequestParam String token) throws APIException {
+        return userService.verifyToken(email, token);
+    }
+
+    @PatchMapping("/forgot-password")
+    public UserEntity forgotPassword(@RequestParam String email,
+                                     @RequestParam String password, @RequestParam String confirmPassword) throws APIException {
+
+        return userService.forgotPassword(email, password, confirmPassword);
+    }
+
 }

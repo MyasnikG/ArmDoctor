@@ -4,6 +4,7 @@ import com.armdoctor.dto.requestdto.UserDTO;
 import com.armdoctor.enums.Status;
 import com.armdoctor.exceptions.APIException;
 import com.armdoctor.exceptions.ResourceAlreadyExistsException;
+import com.armdoctor.exceptions.UserNotFoundException;
 import com.armdoctor.exceptions.UserValidationException;
 import com.armdoctor.model.UserEntity;
 import com.armdoctor.repository.UserRepository;
@@ -112,6 +113,67 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new APIException("Problem during changing password");
         }
+        return userEntity;
+    }
+
+    @Override
+    public UserEntity sendToken(String email) throws APIException {
+        UserEntity userEntity = null;
+        try {
+            userEntity = userRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new APIException("Problem during sending email");
+        }
+
+        if (userEntity == null) {
+            throw new UserNotFoundException("Wrong email: " + email);
+        }
+
+        String resetToken = TokenGenerate.generateResetToken();
+        userEntity.setResetToken(resetToken);
+        userRepository.save(userEntity);
+
+        mailSender.sendEmail(userEntity.getEmail(), "Reset Token", "Your reset token: " + resetToken);
+
+        return userEntity;
+    }
+
+    @Override
+    public Boolean verifyToken(String email, String token) throws APIException {
+        UserEntity userEntity = null;
+        try {
+            userEntity = userRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new APIException("Problem during verifying email");
+        }
+
+        if (!userEntity.getResetToken().equals(token)) {
+            throw new UserValidationException("Wrong reset token: " + token);
+        }
+        return true;
+    }
+
+    @Override
+    public UserEntity forgotPassword(String email, String password, String confirmPassword) throws APIException {
+        UserEntity userEntity = null;
+        if (!password.equals(confirmPassword)) {
+            throw new UserValidationException("Passwords do not match");
+        }
+
+        try {
+            userEntity = userRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw new APIException("Problem during changing password");
+        }
+
+        if (userEntity.getResetToken() == null) {
+            throw new APIException("Problem during changing password");
+        }
+
+        userEntity.setResetToken(null);
+        userEntity.setPassword(passwordEncoder.encode(confirmPassword));
+        userRepository.save(userEntity);
+
         return userEntity;
     }
 
