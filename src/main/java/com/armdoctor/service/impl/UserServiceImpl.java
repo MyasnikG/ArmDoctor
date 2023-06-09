@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity changePassword(String oldPassword, String newPassword, String confirmPassword, String email) throws APIException {
         UserEntity userEntity = null;
 
+        UserValidation.validatePassword(newPassword);
         if (!newPassword.equals(confirmPassword)) {
             throw new UserValidationException("Passwords do not match!");
         }
@@ -156,6 +157,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity forgotPassword(String email, String password, String confirmPassword) throws APIException {
         UserEntity userEntity = null;
+        UserValidation.validatePassword(password);
         if (!password.equals(confirmPassword)) {
             throw new UserValidationException("Passwords do not match");
         }
