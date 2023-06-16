@@ -12,16 +12,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UserValidationException.class)
-    public ResponseEntity<ErrorResponse> validationExceptionHandler(UserValidationException exception) {
+    @ExceptionHandler(DoctorValidationException.class)
+    public ResponseEntity<ErrorResponse> validationExceptionHandler(DoctorValidationException exception) {
 
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> notFoundExceptionHandler(UserNotFoundException exception) {
+    @ExceptionHandler(DoctorNotFoundException.class)
+    public ResponseEntity<ErrorResponse> notFoundExceptionHandler(DoctorNotFoundException exception) {
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND.value());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
