@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -58,14 +56,8 @@ public class DoctorServiceImpl implements DoctorService {
         doctorEntity.setRole(dto.getRole());
         doctorEntity.setProfession(dto.getProfession());
         doctorEntity.setWorkTime(dto.getWorkTime());
-
-
-        List<HospitalEntity> hospitalEntities = new ArrayList<>();
-        for (int i = 0; i < dto.getHospitals().size(); i++) {
-            String s = dto.getHospitals().get(i);
-            hospitalEntities.add(hospitalRepository.getByName(s));
-        }
-        doctorEntity.setHospitalEntities(hospitalEntities);
+        doctorEntity.setBookTime(dto.getBookTime());
+        List<DoctorEntity> doctorEntities = new ArrayList<>();
 
         try {
             doctorRepository.save(doctorEntity);
@@ -212,6 +204,16 @@ public class DoctorServiceImpl implements DoctorService {
         doctorEntity.setYear(dto.getYear());
         doctorEntity.setEmail(dto.getEmail() == null ? doctorEntity.getEmail() : dto.getEmail());
         doctorEntity.setRole(dto.getRole());
+
+        //Set<DoctorEntity> doctorEntitySet = new HashSet<>();
+        //doctorEntitySet.add(doctorEntity);
+        Set<HospitalEntity> set = new HashSet<>();
+        List<String> hospitals = dto.getHospitals();
+        for (int i = 0; i < hospitals.size(); i++) {
+            HospitalEntity byName = hospitalRepository.getByName(hospitals.get(i));
+            set.add(byName);
+        }
+        doctorEntity.setHospitalEntities(set);
 
         try {
             doctorRepository.save(doctorEntity);

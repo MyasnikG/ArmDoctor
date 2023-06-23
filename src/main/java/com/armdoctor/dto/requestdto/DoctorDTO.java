@@ -1,6 +1,7 @@
 package com.armdoctor.dto.requestdto;
 
 import com.armdoctor.enums.Role;
+import com.armdoctor.model.HospitalEntity;
 import lombok.Data;
 
 import javax.persistence.EnumType;
@@ -21,5 +22,7 @@ public class DoctorDTO {
 
     private String profession;
     private String workTime;
+
+    private String bookTime;
     private List<String> hospitals;
 }
