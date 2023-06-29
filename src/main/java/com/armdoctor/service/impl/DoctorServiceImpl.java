@@ -56,8 +56,14 @@ public class DoctorServiceImpl implements DoctorService {
         doctorEntity.setRole(dto.getRole());
         doctorEntity.setProfession(dto.getProfession());
         doctorEntity.setWorkTime(dto.getWorkTime());
-        doctorEntity.setBookTime(dto.getBookTime());
-        List<DoctorEntity> doctorEntities = new ArrayList<>();
+
+        Set<HospitalEntity> set = new HashSet<>();
+        for (String x : dto.getHospitals()) {
+            HospitalEntity hospital = hospitalRepository.getByName(x);
+            set.add(hospital);
+        }
+
+        doctorEntity.setHospitals(set);
 
         try {
             doctorRepository.save(doctorEntity);
@@ -205,16 +211,13 @@ public class DoctorServiceImpl implements DoctorService {
         doctorEntity.setEmail(dto.getEmail() == null ? doctorEntity.getEmail() : dto.getEmail());
         doctorEntity.setRole(dto.getRole());
 
-        //Set<DoctorEntity> doctorEntitySet = new HashSet<>();
-        //doctorEntitySet.add(doctorEntity);
-        Set<HospitalEntity> set = new HashSet<>();
-        List<String> hospitals = dto.getHospitals();
-        for (int i = 0; i < hospitals.size(); i++) {
-            HospitalEntity byName = hospitalRepository.getByName(hospitals.get(i));
-            set.add(byName);
+        Set<HospitalEntity> hospitals = new HashSet<>();
+        for (String x : dto.getHospitals()) {
+            HospitalEntity hospital = hospitalRepository.getByName(x);
+            hospitals.add(hospital);
         }
-        doctorEntity.setHospitalEntities(set);
 
+        doctorEntity.setHospitals(hospitals);
         try {
             doctorRepository.save(doctorEntity);
         } catch (Exception e) {

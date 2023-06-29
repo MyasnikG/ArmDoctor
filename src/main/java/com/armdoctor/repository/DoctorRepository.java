@@ -18,6 +18,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Integer> {
 
     DoctorEntity findByEmail(String email);
 
+
     @Override
     Optional<DoctorEntity> findById(Integer id);
 }

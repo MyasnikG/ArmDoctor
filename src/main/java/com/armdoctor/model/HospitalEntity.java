@@ -1,8 +1,7 @@
 package com.armdoctor.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,7 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "hospital")
@@ -19,12 +19,14 @@ public class HospitalEntity {
 
     @Id
     @Column(name = "hospital_id")
-    private Integer hospitalId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String address;
 
-    @ManyToMany(mappedBy = "hospitalEntities")
+    @ManyToMany(mappedBy = "hospitals")
+    @JsonIgnore
+    private Set<DoctorEntity> doctors;
 
-    Set<DoctorEntity> doctorEntity;
 
 }
