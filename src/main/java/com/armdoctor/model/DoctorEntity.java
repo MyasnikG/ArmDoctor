@@ -5,6 +5,7 @@ import com.armdoctor.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ public class DoctorEntity {
     @Column(name = "last_name")
     private String surname;
     private Integer year;
+    @Email(message = "Invalid email format!")
     private String email;
     private String password;
 

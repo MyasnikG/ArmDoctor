@@ -23,6 +23,8 @@ public class HospitalEntity {
     private Integer id;
     private String name;
     private String address;
+    private String email;
+    private String password;
 
     @ManyToMany(mappedBy = "hospitals")
     @JsonIgnore
