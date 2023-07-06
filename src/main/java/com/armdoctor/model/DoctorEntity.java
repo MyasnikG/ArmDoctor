@@ -50,7 +50,7 @@ public class DoctorEntity {
     private String workTime;
 
     @Column(name = "book_time")
-    private String bookTime;
+    private String bookTime = "0";
 
     @ManyToMany
     @JoinTable(name = "related",

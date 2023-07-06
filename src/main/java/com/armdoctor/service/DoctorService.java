@@ -1,6 +1,7 @@
 package com.armdoctor.service;
 
 import com.armdoctor.dto.requestdto.DoctorDTO;
+import com.armdoctor.dto.responsedto.DoctorResponseDTO;
 import com.armdoctor.exceptions.APIException;
 import com.armdoctor.model.DoctorEntity;
 
@@ -11,6 +12,8 @@ public interface DoctorService {
     DoctorEntity createUser(DoctorDTO dto) throws APIException;
 
     List<DoctorEntity> getByUsername(String email) throws APIException;
+
+    List<DoctorResponseDTO> getByProfession(String profession) throws APIException;
 
     List<DoctorEntity> getAll() throws APIException;
 
@@ -24,9 +27,8 @@ public interface DoctorService {
 
     DoctorEntity forgotPassword(String email, String password, String confirmPassword) throws APIException;
 
-
     DoctorEntity update(DoctorDTO doctorDTO) throws APIException;
 
-    DoctorEntity bookTime(Integer id, String time) throws APIException;
+    DoctorEntity bookTime(Integer id, String time, boolean isCancelled) throws APIException;
     void delete(Integer id) throws APIException;
 }

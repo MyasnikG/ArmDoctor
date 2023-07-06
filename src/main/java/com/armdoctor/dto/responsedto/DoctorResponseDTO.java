@@ -26,10 +26,10 @@ public class DoctorResponseDTO {
     @JsonIgnore
     private Integer id;
 
-    @JsonProperty("first_name")
+    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("last_name")
+    @JsonProperty("surname")
     private String surname;
 
     @JsonProperty("year")
@@ -38,7 +38,7 @@ public class DoctorResponseDTO {
     @JsonProperty("email")
     private String email;
 
-   @JsonIgnore
+    @JsonIgnore
     private String password;
 
     @JsonIgnore
@@ -56,15 +56,11 @@ public class DoctorResponseDTO {
     @JsonProperty("profession")
     private String profession;
 
-    @JsonProperty("work_time")
+    @JsonProperty("workTime")
     private String workTime;
 
-    @JsonProperty("book_time")
+    @JsonProperty("bookTime")
     private String bookTime;
-
-    @ManyToMany
-    @JoinTable(name = "related",
-            joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "hospital_id"))
 
     @JsonIgnore
     private Set<HospitalEntity> hospitals;

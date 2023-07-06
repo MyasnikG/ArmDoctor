@@ -1,6 +1,7 @@
 package com.armdoctor.controller;
 
 import com.armdoctor.dto.requestdto.DoctorDTO;
+import com.armdoctor.dto.responsedto.DoctorResponseDTO;
 import com.armdoctor.exceptions.APIException;
 import com.armdoctor.model.DoctorEntity;
 import com.armdoctor.service.impl.DoctorServiceImpl;
@@ -73,12 +74,17 @@ public class DoctorController {
 
     @GetMapping("/get-all")
     public List<DoctorEntity> getAll() throws APIException {
-     return userService.getAll();
+        return userService.getAll();
     }
 
     @PatchMapping("/book-time/{id}")
-    public DoctorEntity bookTime(@PathVariable Integer id, @RequestParam String bookTime){
-      return null;
+    public DoctorEntity bookTime(@PathVariable Integer id, @RequestParam String bookTime, @RequestParam boolean isCancelled) throws APIException {
+        return userService.bookTime(id, bookTime, isCancelled);
+    }
+
+    @GetMapping("/get-by-profession")
+    public List<DoctorResponseDTO> getByProfession(@RequestParam String profession) throws APIException {
+        return userService.getByProfession(profession);
     }
 
 }

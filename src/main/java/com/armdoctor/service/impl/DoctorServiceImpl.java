@@ -1,6 +1,7 @@
 package com.armdoctor.service.impl;
 
 import com.armdoctor.dto.requestdto.DoctorDTO;
+import com.armdoctor.dto.responsedto.DoctorResponseDTO;
 import com.armdoctor.enums.Status;
 import com.armdoctor.exceptions.APIException;
 import com.armdoctor.exceptions.ResourceAlreadyExistsException;
@@ -14,6 +15,8 @@ import com.armdoctor.service.DoctorService;
 import com.armdoctor.util.ArmDoctorMailSender;
 import com.armdoctor.util.TokenGenerate;
 import com.armdoctor.util.DoctorValidation;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,6 +88,22 @@ public class DoctorServiceImpl implements DoctorService {
             throw new APIException("Problem during getting the user");
         }
         return entityList;
+    }
+
+    @Override
+    public List<DoctorResponseDTO> getByProfession(String profession) throws APIException {
+        List<DoctorEntity> dtoList = null;
+        try {
+            dtoList = doctorRepository.getByProfession(profession);
+        } catch (Exception e) {
+            throw new APIException("Problem during getting Doctors");
+        }
+        if (dtoList.isEmpty()) {
+            throw new DoctorNotFoundException("Doctor not found with given details");
+        }
+
+        return new ObjectMapper().convertValue(dtoList, new TypeReference<List<DoctorResponseDTO>>() {
+        });
     }
 
     @Override
@@ -239,6 +258,35 @@ public class DoctorServiceImpl implements DoctorService {
             throw new APIException("Problem during updating the user");
         }
         return doctorEntity;
+    }
+
+    @Override
+    public DoctorEntity bookTime(Integer id, String time, boolean isCancelled) throws APIException {
+        Optional<DoctorEntity> doctorEntity = doctorRepository.findById(id);
+        if (doctorEntity.isEmpty()) {
+            throw new DoctorNotFoundException("Doctor not found with given ID");
+        }
+        DoctorEntity entity = doctorEntity.get();
+        int workTime = Integer.parseInt(entity.getWorkTime());
+        int bookTime = Integer.parseInt(entity.getBookTime());
+        int newTime = Integer.parseInt(time);
+
+        if (bookTime + newTime > workTime) {
+            throw new DoctorValidationException("Doctor is busy");
+        }
+
+        if (isCancelled) {
+            entity.setBookTime(String.valueOf(bookTime - newTime));
+        } else {
+            entity.setBookTime(String.valueOf(bookTime + newTime));
+        }
+
+        try {
+            doctorRepository.save(entity);
+        } catch (Exception e) {
+            throw new APIException("Problem during saving the booking time");
+        }
+        return entity;
     }
 
     @Override
