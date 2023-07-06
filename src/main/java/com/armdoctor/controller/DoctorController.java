@@ -71,4 +71,14 @@ public class DoctorController {
         userService.delete(id);
     }
 
+    @GetMapping("/get-all")
+    public List<DoctorEntity> getAll() throws APIException {
+     return userService.getAll();
+    }
+
+    @PatchMapping("/book-time/{id}")
+    public DoctorEntity bookTime(@PathVariable Integer id, @RequestParam String bookTime){
+      return null;
+    }
+
 }

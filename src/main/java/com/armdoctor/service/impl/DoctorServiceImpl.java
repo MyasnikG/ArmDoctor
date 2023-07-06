@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -84,6 +85,20 @@ public class DoctorServiceImpl implements DoctorService {
             throw new APIException("Problem during getting the user");
         }
         return entityList;
+    }
+
+    @Override
+    public List<DoctorEntity> getAll() throws APIException {
+        List<DoctorEntity> doctorEntities = null;
+        try {
+            doctorEntities = doctorRepository.findAll();
+        } catch (Exception e) {
+            throw new APIException("Problem during getting doctors");
+        }
+        return doctorEntities
+                .stream()
+                .filter(u -> u.getName() != null && !u.getName().equals(HospitalServiceImpl.NAME))
+                .collect(Collectors.toList());
     }
 
     @Override

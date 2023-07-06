@@ -12,6 +12,8 @@ public interface DoctorService {
 
     List<DoctorEntity> getByUsername(String email) throws APIException;
 
+    List<DoctorEntity> getAll() throws APIException;
+
     DoctorEntity verifyUser(String email, String verifyCode) throws APIException;
 
     DoctorEntity changePassword(String oldPassword, String newPassword, String confirmPassword, String email) throws APIException;
@@ -25,5 +27,6 @@ public interface DoctorService {
 
     DoctorEntity update(DoctorDTO doctorDTO) throws APIException;
 
+    DoctorEntity bookTime(Integer id, String time) throws APIException;
     void delete(Integer id) throws APIException;
 }

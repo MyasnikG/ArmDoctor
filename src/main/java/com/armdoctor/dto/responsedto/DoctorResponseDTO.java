@@ -3,6 +3,8 @@ package com.armdoctor.dto.responsedto;
 import com.armdoctor.enums.Role;
 import com.armdoctor.enums.Status;
 import com.armdoctor.model.HospitalEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
@@ -18,9 +20,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({})
+@JsonIgnoreProperties
 public class DoctorResponseDTO {
 
-    @JsonProperty("user_id")
+    @JsonIgnore
     private Integer id;
 
     @JsonProperty("first_name")
@@ -35,21 +38,19 @@ public class DoctorResponseDTO {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("password")
+   @JsonIgnore
     private String password;
 
-    @JsonProperty("verification_code")
+    @JsonIgnore
     private String verifyCode;
 
-    @JsonProperty("status")
-    @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Status status;
 
-    @JsonProperty("role")
-    @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Role role;
 
-    @JsonProperty("reset_token")
+    @JsonIgnore
     private String resetToken;
 
     @JsonProperty("profession")
@@ -65,5 +66,6 @@ public class DoctorResponseDTO {
     @JoinTable(name = "related",
             joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "hospital_id"))
 
+    @JsonIgnore
     private Set<HospitalEntity> hospitals;
 }
