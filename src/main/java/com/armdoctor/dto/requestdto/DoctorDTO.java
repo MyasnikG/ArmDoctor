@@ -19,10 +19,8 @@ public class DoctorDTO {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private String profession;
     private String workTime;
-
     private String bookTime;
     private List<String> hospitals;
 }

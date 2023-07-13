@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class HospitalController {
 
     @PostMapping("/add-hospital")
     @ResponseStatus(HttpStatus.CREATED)
-    public HospitalEntity addHospital(@RequestBody HospitalDTO dto) throws APIException {
+    public HospitalEntity addHospital(@RequestBody @Valid HospitalDTO dto) throws APIException {
 
         return hospitalService.addHospital(dto);
     }
