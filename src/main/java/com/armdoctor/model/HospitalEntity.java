@@ -27,6 +27,7 @@ public class HospitalEntity {
     private String email;
     private String password;
 
+
     @ManyToMany(mappedBy = "hospitals")
     @JsonIgnore
     private Set<DoctorEntity> doctors;

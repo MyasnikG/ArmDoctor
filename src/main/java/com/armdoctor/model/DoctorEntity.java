@@ -23,8 +23,10 @@ public class DoctorEntity {
     @Column(name = "user_id")
     private Integer id;
 
+
     @Column(name = "first_name")
     private String name;
+
 
     @Column(name = "last_name")
     private String surname;

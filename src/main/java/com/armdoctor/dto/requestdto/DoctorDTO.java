@@ -60,6 +60,7 @@ public class DoctorDTO {
     @Digits(integer = 4, message = "Year must contain only numeric values!", fraction = 0)
     private Integer year;
 
+    
     @NotEmpty(message = "Email cannot be null or empty")
     @Pattern(regexp = EMAIL_REGEX, message = EMAIL_MSG)
     private String email;
