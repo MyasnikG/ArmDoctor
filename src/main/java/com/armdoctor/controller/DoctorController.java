@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class DoctorController {
     private DoctorServiceImpl userService;
 
     @PostMapping("/create-user")
-    public DoctorEntity createUser(@RequestBody DoctorDTO doctorDTO) throws APIException {
+    public DoctorEntity createUser(@RequestBody @Valid DoctorDTO doctorDTO) throws APIException {
         DoctorEntity user = userService.createUser(doctorDTO);
         return user;
     }

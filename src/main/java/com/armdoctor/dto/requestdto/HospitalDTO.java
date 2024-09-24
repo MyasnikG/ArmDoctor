@@ -29,9 +29,11 @@ public class HospitalDTO {
 
     private Integer id;
     @NotEmpty(message = NAME_NULL_MSG)
+
     @Pattern(regexp = NAME_REGEX, message = NAME_REGEX_MSG)
     @Length(min = NAME_SIZE_MIN, max = NAME_SIZE_MAX, message = NAME_SIZE_MSG)
     private String name;
+
     @Pattern(regexp = EMAIL_REGEX, message = EMAIL_MSG)
     private String email;
     @NotEmpty(message = ADDRESS_SIZE_MSG)

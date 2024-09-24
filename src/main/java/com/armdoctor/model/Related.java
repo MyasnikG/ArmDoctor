@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @IdClass(Related.class)
+
 public class Related implements Serializable {
 
     @Id

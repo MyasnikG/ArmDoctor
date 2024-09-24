@@ -18,6 +18,7 @@ import java.util.Set;
 public class HospitalEntity {
 
     @Id
+
     @Column(name = "hospital_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
